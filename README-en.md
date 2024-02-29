@@ -1,5 +1,5 @@
 <!-- vscode-markdown-toc -->
-* 1. [Introduce](#Introduce)
+* 1. [Introduction](#Introduction)
 * 2. [Quick start](#Quickstart)
 	* 2.1. [Create app](#Createapp)
 	* 2.2. [Configure the app](#Configuretheapp)
@@ -27,17 +27,17 @@
 [中文版](./README.md)
 ##  1. <a name='Introduce'></a>Introduce
 
-This project is a Go SDK for Shoplazza developers to complete authentication without having to understand too much Oauth2 process.
+This project is a Go SDK for Shoplazza developers to complete authentication without having to dive too deep into the Oauth2 process.
 
-Read the documentation for the Shoplazza certification process Standard OAuth process [Standard OAuth process](https://helpcenter.shoplazza.com/hc/zh-cn/articles/4408686586137#h_01FM4XX2CX746V3277HB7SPGTN)
+Documentation for the Shoplazza certification process Standard OAuth process is available here: [Standard OAuth process](https://helpcenter.shoplazza.com/hc/zh-cn/articles/4408686586137#h_01FM4XX2CX746V3277HB7SPGTN)
 
 
 ##  2. <a name='Quickstart'></a>Quick start
 ###  2.1. <a name='Createapp'></a>Create app
-Read the documentation for creating the app [Building Public App](https://helpcenter.shoplazza.com/hc/zh-cn/articles/4409360434201)
+Doocumentation for creating the app is here: [Building Public App](https://helpcenter.shoplazza.com/hc/zh-cn/articles/4409360434201)
 
 ###  2.2. <a name='Configuretheapp'></a>Configure the app
-Read the documentation for configuring the app [Manage Your App](https://helpcenter.shoplazza.com/hc/zh-cn/articles/4409476265241)
+Documentation for configuring the app, after app creation, is here: [Manage Your App](https://helpcenter.shoplazza.com/hc/zh-cn/articles/4409476265241)
 
 ###  2.3. <a name='sdk-demo-app'></a>Start SDK DemoApp
 1、Import Oauth SDK Go
@@ -50,7 +50,7 @@ go get -u https://github.com/Shoplazza/oauth-sdk-go
 cd /example/basic
 ```
 
-3、Fill in the values of ClientID, ClientSecret, RedirectUri and Scopes of your app into the config structure
+3、Fill in the values of ClientID, ClientSecret, RedirectURL and Scopes of your app into the config structure
 ```go
 import (
   co "github.com/Shoplazza/oauth-sdk-go"
@@ -60,14 +60,14 @@ oauth := &co.Config{
   ClientID:     "WVpHNkENUL9CBbDjGO_po9tfG02XW2Z-X54M4LObfDs",     // your app client id
   ClientSecret: "DdJNhsopKxAWDHjqjI1rpQZW17Fp6GXrHhC0IgwdXag", // your app client secret
   Endpoint:     shoplazza.Endpoint,
-  RedirectURI:  "https://6f1e-123-58-221-57.ngrok.io/oauth_sdk/redirect_uri",      // your app redirect uri, you need to replace the 6f1e-123-58-221-57.ngrok.io with your service domain, and ensure that the domain name is externally accessible
+  RedirectURL:  "https://6f1e-123-58-221-57.ngrok.io/oauth_sdk/redirect_uri",      // your app redirect uri, you need to replace the 6f1e-123-58-221-57.ngrok.io with your service domain, and ensure that the domain name is externally accessible
   Scopes:       []string{"read_shop", "write_shop"}, // the permissions you want
 }
 ```
-4、Fill in the correct App Uri path and Redirect Uri path
+4、Fill in the correct App URL path and Redirect URL path
 ```go
 // app uri path
-// if your redirect uri is 'https://6f1e-123-58-221-57.ngrok.io/oauth_sdk/app_uri', the app uri path will be '/oauth_sdk/app_uri'
+// if your redirect URL is 'https://6f1e-123-58-221-57.ngrok.io/oauth_sdk/app_uri', the app URL path will be '/oauth_sdk/app_uri'
 r.GET("/oauth_sdk/app_uri", func(c *gin.Context) {
     params := getParams(c)
     var opts []co.AuthCodeOption
@@ -75,8 +75,8 @@ r.GET("/oauth_sdk/app_uri", func(c *gin.Context) {
 })
 ```
 ```go
-// redirect uri path
-// if your redirect uri is 'https://6f1e-123-58-221-57.ngrok.io/oauth_sdk/redirect_uri', the redirect uri path will be '/oauth_sdk/redirect_uri'
+// redirect URL path
+// if your redirect URL is 'https://6f1e-123-58-221-57.ngrok.io/oauth_sdk/redirect_uri', the redirect URL path will be '/oauth_sdk/redirect_uri'
 r.GET("/oauth_sdk/redirect_uri", func(c *gin.Context) {
     params := getParams(c)
     token, err := oauth.Exchange(context.Background(), params.Get("shop"), params.Get("code"))
@@ -90,25 +90,25 @@ r.GET("/oauth_sdk/redirect_uri", func(c *gin.Context) {
 ```
 5、Set the port of the service
 ```go
-r.Run(":8080") // here is your service port. 8080 is just an example
+r.Run(":8080") // enter your service port (8080 is just an example)
 ```
 
 ###  2.4. <a name='check'></a>Validation
-Now that all configurations of demo app have been completed, start app for verification
+Now that all configurations of demo app have been completed, we can start the app for verification
 
 1、Execute in the baisc directory
 ```curl
 go run demo_app.go
 ```
 
-2、Ensure that the installation process is smooth
-Please read this step first [Testing public app](https://helpcenter.shoplazza.com/hc/en-us/articles/4409360434201-Building-Public-App#h_01FM7GXEAM5VPXTK6PJSA9MFWC)
+2、Ensure that the installation process completes successfully
+Documentation for reference: [Testing public app](https://helpcenter.shoplazza.com/hc/en-us/articles/4409360434201-Building-Public-App#h_01FM7GXEAM5VPXTK6PJSA9MFWC)
 
 Installation process:
 
-If you have development store, go to  [Partner Center](https://partners.shoplazza.com/)->Apps->Apps List->Manage Apps->Test Apps  with the above Shoplazza account, select store to install the app and jump to the authorized installation page of the store for testing.
+If you already have a development store set up, go to  [Partner Center](https://partners.shoplazza.com/)->Apps->Apps List->Manage Apps->Test Apps with your Shoplazza account, select the development store to install the app and jump to the authorized installation page of the store for testing.
 
-The page responds to the normal authorization result:
+The page should respond to the normal authorization result:
 ```json
 {
     "AccessToken": "lzhOS5Gl3tfVDSQZ8pBVQuMyCD24PMp9sUGZXMtW3b4",
@@ -123,7 +123,7 @@ The page responds to the normal authorization result:
 }
 ```
 
-If you encounter the following page, you need to replace the 6f1e-123-58-221-57.ngrok.io with your service domain!!!
+If you encounter the following page, you might need to replace the 6f1e-123-58-221-57.ngrok.io with your service domain:
 ![报错图片](https://cdn.shoplazza.com/59c635bd81b66755ab9a64d698af0900.jpg)
 
 ##  3. <a name='dir'></a>The directory structure
@@ -133,7 +133,7 @@ If you encounter the following page, you need to replace the 6f1e-123-58-221-57.
 │   ├── basic   
 │   │     └── demo-app.go         // Demo app, Fill in the configuration to start the service
 │   ├── middleware    
-│   │     └── demo-app.go         // Demo app of middleware version,Fill in the configuration to start the service
+│   │     └── demo-app.go         // Demo app of middleware version, fill in the configuration to start the service
 ├── internal
 │   └── token.go           
 ├── shoplazza
@@ -150,7 +150,7 @@ If you encounter the following page, you need to replace the 6f1e-123-58-221-57.
 ##  4. <a name='function'></a>About the use of functional functions
 
 ###  4.1. <a name='AuthCodeURL'></a>AuthCodeURL 
-To show the App's prompt page for the merchant to start with,Shoplazza will first call the `app uri path` provided by your app service,you need to redirect the parameters defined below to the following URL in this endpoint:
+To show the App's prompt page for the merchant to start with,Shoplazza will first call the `app url path` provided by your app service,you need to redirect the parameters defined below to the following URL in this endpoint:
 ```curl
 https://{store_name}.myshoplaza.com/admin/oauth/authorize?client_id={client_id}&scope={scopes}&redirect_uri={redirect_uri}&response_type={response_type}&state={state}
 ```
@@ -158,7 +158,7 @@ https://{store_name}.myshoplaza.com/admin/oauth/authorize?client_id={client_id}&
 - client_id: App client id
 - scopes: A space separated list of scopes. For example, to write orders and read customers, use scope="write_order read_customer".
 - redirect_uri: The URL to which a merchant is redirected after authorizing the app.
-- response_type: The response type of OAuth 2.0 process, here we need to fill in "code"
+- response_type: The response type of OAuth 2.0 process, here we need to fill in the "code"
 - state: A random value, use to prevent CSRF attacks.
 
 You can use Go OAuth SDK to quickly assemble this URL, see example below:
@@ -172,7 +172,7 @@ oauth := &co.Config{
     ClientID:     "s1Ip1WxpoEAHtPPzGiP2rK2Az-P07Nie7V97hRKigl4",
     ClientSecret: "0LFJcNqVb2Z1nVt9xT72vOo0sTWd6j8wVX60Y5xdzZZ",
     Endpoint:     shoplazza.Endpoint,
-    RedirectURI:  "https://3830-43-230-206-233.ngrok.io/oauth_sdk/redirect_uri/",
+    RedirectURL:  "https://3830-43-230-206-233.ngrok.io/oauth_sdk/redirect_uri/",
     Scopes:       []string{"read_shop"},
 }
 var opts []AuthCodeOption
@@ -180,7 +180,7 @@ oauth.AuthCodeURL("xxx.myshoplaza.com", opts...)
 ```
 
 ###  4.2. <a name='ValidShop&&SignatureValid'></a>ValidShop&&SignatureValid
-When the merchant clicks the install button in the prompt, they will be redirected to the `redirect uri path` of your app service,see example below:
+When the merchant clicks the install button in the prompt, they will be redirected to the `redirect url path` of your app service,see example below:
 ```curl
 http://example.com/some/redirect_uri?code={authorization_code}&shop={store_name}.myshoplaza.com&hmac={hmac}
 ```
@@ -189,7 +189,7 @@ Before we continue, make sure your app performs the following security checks. I
 - The `hmac` is valid and signed by Shoplazza
 - The `shop` parameter is a valid shop hostname, ends with `myshoplaza.com`
 
-For Security Checks, Go OAuth SDK also has corresponding methods, you can quickly verify hmac and shop parameter by SDK, see example below:
+For Security Checks, Go OAuth SDK also has corresponding methods, and you can quickly verify hmac and shop parameter by SDK. An example is provided below:
 
 ```go
 import (
